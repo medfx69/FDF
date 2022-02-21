@@ -6,7 +6,7 @@
 /*   By: mait-aad <mait-aad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 14:39:30 by mait-aad          #+#    #+#             */
-/*   Updated: 2022/02/21 14:44:27 by mait-aad         ###   ########.fr       */
+/*   Updated: 2022/02/21 21:54:08 by mait-aad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,31 +63,30 @@ void	free_int_shit(int **s)
 	free(s);
 }
 
-int	**split_data(char	*data)
+int	**split_data(t_cdts	*data)
 {
 	char	**splted_data;
 	char	**tmp;
 	char	*pfree;
-	t_cdts	cord;
 	int		i;
 
-	pfree = get_data(data);
+	pfree = get_data(data->map);
 	splted_data = ft_split(pfree, '\n');
 	free(pfree);
-	cord.y = get_y(splted_data);
-	cord.z = malloc(sizeof(int *) * cord.y);
-	if (!cord.z)
+	data->y = get_y(splted_data);
+	data->z = malloc(sizeof(int *) * data->y);
+	if (!data->z)
 		return (0);
 	i = 0;
-	while (i < cord.y - 1)
+	while (i < data->y - 1)
 	{
 		tmp = ft_split(splted_data[i], 32);
-		cord.z[i] = trsn_char_int(tmp);
-		if (i++ != cord.y - 2)
+		data->z[i] = trsn_char_int(tmp);
+		if (i++ != data->y - 2)
 			free_char_shit(tmp);
 	}
-	cord.x = get_y(tmp);
+	data->x = get_y(tmp);
 	free_char_shit(splted_data);
 	free_char_shit(tmp);
-	return (cord.z);
+	return (data->z);
 }

@@ -6,7 +6,7 @@
 /*   By: mait-aad <mait-aad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 16:15:16 by mait-aad          #+#    #+#             */
-/*   Updated: 2022/02/21 14:43:38 by mait-aad         ###   ########.fr       */
+/*   Updated: 2022/02/21 21:52:44 by mait-aad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,6 @@ void	ft_strncpy(char *dest, char *src, int size);
 int		ft_atoi(const char	*str);
 char	*ft_substr(char *s, unsigned int start, size_t len);
 char	*get_data(char	*map);
-int		**split_data(char	*data);
+int		**split_data(t_cdts *data);
 
 #endif

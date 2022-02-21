@@ -6,7 +6,7 @@
 /*   By: mait-aad <mait-aad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 14:40:35 by mait-aad          #+#    #+#             */
-/*   Updated: 2022/02/21 14:44:11 by mait-aad         ###   ########.fr       */
+/*   Updated: 2022/02/21 22:16:25 by mait-aad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,37 @@ void	img_pix_put(t_img *img, int x, int y, int color)
 	}
 }
 
-int	render_rect(t_img	*img, t_rect rect)
+int	render_rect(t_img	*img, t_rect rect ,t_data	*data)
 {
 	int	i;
 	int	j;
+	int	c;
 
-	i =  20;
-	while (i < WINDOW_HEIGHT - 20)
+	c = 0;
+	j = 0;
+	while (c < data->map.x)
 	{
-		j = 20;
-		// while (j < WINDOW_WIDTH - 20)
-		// {
-			img_pix_put(img, j, i, rect.color);	
-		// }
-		++i;
+		i = 0;
+		while (i < WINDOW_HEIGHT)
+		{
+				img_pix_put(img, j, i, rect.color);	
+			++i;
+		}
+		j = j + (WINDOW_WIDTH / data->map.y);
+		c++;
+	}
+	c = 0;
+	i = 0;
+	while (c < data->map.y)
+	{
+		j = 0;
+		while (j < WINDOW_WIDTH)
+		{
+				img_pix_put(img, j, i, rect.color);	
+			++j;
+		}
+		i = i + (WINDOW_HEIGHT / data->map.x);
+		c++;
 	}
 	return (0);
 }
@@ -64,9 +81,9 @@ void render_background(t_img *img, int	color)
 
 int	render(t_data *data)
 {
-	render_background(&data->mlx_img, WHITE_PIXEL);
+	//render_background(&data->mlx_img, WHITE_PIXEL);
 	// render_rect(&data->mlx_img, (t_rect){WINDOW_WIDTH, WINDOW_HEIGHT, 100, 100, GREEN_PIXEL});
-	render_rect(&data->mlx_img, (t_rect){0, 0, 100, 100, RED_PIXEL});
+	render_rect(&data->mlx_img, (t_rect){0, 0, 100, 100, RED_PIXEL}, data);
 	mlx_put_image_to_window(data->mlx, data->mlx_win, data->mlx_img.img, 0, 0);
 	return (0);
 }
@@ -87,16 +104,15 @@ int	main(int	ac, char	**av)
 	t_data	data;
 
 	data.map.map = av[1];
-	data.map.z = split_data(data.map.map);
-	printf("%d",data.map.x);
-	// data.mlx = mlx_init();
-	// data.mlx_win = mlx_new_window(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "Hello world!");
-	// data.mlx_img.img = mlx_new_image(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
-	// data.mlx_img.addr = mlx_get_data_addr(data.mlx_img.img, &data.mlx_img.bpp, 
-	// &data.mlx_img.line_len, &data.mlx_img.endian);
-	// mlx_loop_hook(data.mlx, &render, &data);
-	// mlx_key_hook(data.mlx_win, &handle_keypress, &data);
+	data.map.z = split_data(&data.map);
+	data.mlx = mlx_init();
+	data.mlx_win = mlx_new_window(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "Hello world!");
+	data.mlx_img.img = mlx_new_image(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
+	data.mlx_img.addr = mlx_get_data_addr(data.mlx_img.img, &data.mlx_img.bpp, 
+	&data.mlx_img.line_len, &data.mlx_img.endian);
+	mlx_loop_hook(data.mlx, &render, &data);
+	mlx_key_hook(data.mlx_win, &handle_keypress, &data);
 	
-	// mlx_loop(data.mlx);
-	// free(data.mlx);
+	mlx_loop(data.mlx);
+	free(data.mlx);
 }
