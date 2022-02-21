@@ -6,68 +6,88 @@
 /*   By: mait-aad <mait-aad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 14:39:30 by mait-aad          #+#    #+#             */
-/*   Updated: 2022/02/17 18:48:56 by mait-aad         ###   ########.fr       */
+/*   Updated: 2022/02/21 14:44:27 by mait-aad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	get_y(cahr **data)
+int	get_y(char **data)
 {
-	int i;
-	while(*data[i])
-	{
+	int	i;
+
+	i = 0;
+	while (data[i])
 		i++;
-	}
 	return (i);
 }
-char	*get_data(char	*map)
-{
-	int		i;
-	char	*data;
-	char	*tmp = "HELLO";
 
-	i = open(map,O_RDONLY);
-	while (tmp != NULL)
+void	free_char_shit(char **s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
 	{
-		tmp = get_next_line(i);
-		ft_strjoin(data, tmp);
+		free(s[i]);
+		i++;
 	}
-	free(tmp);
-	return (data);
+	free(s);
 }
 
 int	*trsn_char_int(char **s)
 {
-	int	i[2];
+	int	i;
 	int	*cords;
 
-	i[0] = 0;
-	i[1] = 0;
-	cords = (int)malloc(sizeof(int) * get_y(s));
-	while(*s[i[0]])
+	i = 0;
+	cords = (int *)malloc(sizeof(int) * get_y(s));
+	while (s[i])
 	{
-		cords[i[1]] = ft_atoi(s[i[0]]);
-		i[0]++;
-		i[1]++;
+		cords[i] = ft_atoi(s[i]);
+		i++;
 	}
 	return (cords);
 }
 
-char	**split_data(char	*data)
+void	free_int_shit(int **s)
+{
+	int	i;
+
+	i = 0;
+	while (i < 11)
+	{
+		free(s[i]);
+		i++;
+	}
+	free(s);
+}
+
+int	**split_data(char	*data)
 {
 	char	**splted_data;
 	char	**tmp;
-	int		**cords;
+	char	*pfree;
+	t_cdts	cord;
 	int		i;
 
-	split_data = ft_split(data, '\n');
-	cords = (int *)malloc(sizeof(int) * get_y(split_data));
-	while(*split_data[i])
+	pfree = get_data(data);
+	splted_data = ft_split(pfree, '\n');
+	free(pfree);
+	cord.y = get_y(splted_data);
+	cord.z = malloc(sizeof(int *) * cord.y);
+	if (!cord.z)
+		return (0);
+	i = 0;
+	while (i < cord.y - 1)
 	{
-		tmp = ft_split(split_data[i]," ");
-		cords[i] = trsn_char_int(tmp);
-		i++;
+		tmp = ft_split(splted_data[i], 32);
+		cord.z[i] = trsn_char_int(tmp);
+		if (i++ != cord.y - 2)
+			free_char_shit(tmp);
 	}
-	return (cords);
+	cord.x = get_y(tmp);
+	free_char_shit(splted_data);
+	free_char_shit(tmp);
+	return (cord.z);
 }

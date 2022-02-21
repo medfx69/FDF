@@ -6,28 +6,12 @@
 /*   By: mait-aad <mait-aad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 14:40:10 by mait-aad          #+#    #+#             */
-/*   Updated: 2022/02/17 14:40:13 by mait-aad         ###   ########.fr       */
+/*   Updated: 2022/02/19 17:18:10 by mait-aad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "fdf.h"
-
-char	*ft_strchr(const char	*str, int c)
-{
-	char	*s;
-
-	s = (char *)str;
-	if (!s)
-		return (0);
-	while (*s != (char) c)
-	{
-		if (*s == '\0')
-			return (0);
-		s++;
-	}
-	return (s);
-}
 
 size_t	ft_strlen(const char *str)
 {

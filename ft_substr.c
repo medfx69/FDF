@@ -1,41 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mait-aad <mait-aad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/04 10:41:58 by mait-aad          #+#    #+#             */
-/*   Updated: 2022/02/19 14:20:20 by mait-aad         ###   ########.fr       */
+/*   Created: 2021/11/07 15:58:20 by mait-aad          #+#    #+#             */
+/*   Updated: 2022/02/19 15:26:26 by mait-aad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	ft_atoi(const char	*str)
+char	*ft_substr(char	*str, unsigned int start, size_t len)
 {
-	int	i;
-	int	countmi;
-	int	num;
+	char	*ptr;
+	size_t	i;
+	size_t	j;
 
+	if (!str)
+		return (NULL);
+	ptr = malloc(len + 1);
+	if (!ptr)
+		return (NULL);
 	i = 0;
-	countmi = 0;
-	num = 0;
-	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
+	j = 0;
+	while (str[j])
 	{
-		if (str[i] == '-')
-			countmi++;
-		i++;
+		if (j >= start && i < len)
+		{
+				ptr[i] = str[j];
+				i++;
+		}
+		j++;
 	}
-	while (str[i] <= '9' && str[i] >= '0')
-	{
-		num = (num * 10) + (str[i] - 48);
-		i++;
-	}
-	if (countmi != 0)
-		return (-num);
-	else
-		return (num);
+	ptr[i] = '\0';
+	return (ptr);
 }
