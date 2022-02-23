@@ -6,7 +6,7 @@
 /*   By: mait-aad <mait-aad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 14:40:35 by mait-aad          #+#    #+#             */
-/*   Updated: 2022/02/21 22:16:25 by mait-aad         ###   ########.fr       */
+/*   Updated: 2022/02/23 20:41:59 by mait-aad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,37 +29,53 @@ void	img_pix_put(t_img *img, int x, int y, int color)
 	}
 }
 
+// static void iso(int *x, int *y, int z)
+// {
+//     int previous_x;
+//     int previous_y;
+
+//     previous_x = *x;
+//     previous_y = *y;
+//     *x = (previous_x - previous_y) * cos(0.523599);
+//     *y = -z + (previous_x + previous_y) * sin(0.523599);
+// }
+static void iso(int *x, int *y, int z)
+{
+    int previous_x;
+    int previous_y;
+
+    previous_x = *x;
+    previous_y = *y;
+    *x = (previous_x - previous_y) * cos(0.523599);
+	*y = -z + (previous_x + previous_y) * sin(0.523599);
+}
+
 int	render_rect(t_img	*img, t_rect rect ,t_data	*data)
 {
-	int	i;
-	int	j;
-	int	c;
+	int	x[2];
+	int	y[2];
+	int **cord;
 
-	c = 0;
-	j = 0;
-	while (c < data->map.x)
-	{
-		i = 0;
-		while (i < WINDOW_HEIGHT)
+	x[0] = 0;
+	cords = malloc(sizeof(int) * 2);
+	cords[0] = malloc(sizeof(int) * data->map.x[0]);
+	cords[1] = malloc(sizeof(int) * data->map.y);
+	while (x[0] < data->map.x - 1)
+	{	
+		y[0] = 0;
+		while(y[0] < data->map.y - 1)
 		{
-				img_pix_put(img, j, i, rect.color);	
-			++i;
-		}
-		j = j + (WINDOW_WIDTH / data->map.y);
-		c++;
-	}
-	c = 0;
-	i = 0;
-	while (c < data->map.y)
-	{
-		j = 0;
-		while (j < WINDOW_WIDTH)
-		{
-				img_pix_put(img, j, i, rect.color);	
-			++j;
-		}
-		i = i + (WINDOW_HEIGHT / data->map.x);
-		c++;
+			x[1] = x[0];
+			y[1] = y[0];
+			x[1] = (WINDOW_WIDTH - 600 * x[1])/ (data->map.x);
+			y[1] = (WINDOW_HEIGHT - 600 * y[1])/ (data->map.y);
+			iso(&x[1], &y[1], data->map.z[y[0]][x[0]]);
+			cords[0][y[0]] = x[1];
+			cords[1][y[0]] = y[1];
+			img_pix_put(img, x[1], -y[1], rect.color);	
+			y[0]++;
+		}	
+		x[0]++;
 	}
 	return (0);
 }
@@ -103,16 +119,19 @@ int	main(int	ac, char	**av)
 {
 	t_data	data;
 
-	data.map.map = av[1];
-	data.map.z = split_data(&data.map);
-	data.mlx = mlx_init();
-	data.mlx_win = mlx_new_window(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "Hello world!");
-	data.mlx_img.img = mlx_new_image(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
-	data.mlx_img.addr = mlx_get_data_addr(data.mlx_img.img, &data.mlx_img.bpp, 
-	&data.mlx_img.line_len, &data.mlx_img.endian);
-	mlx_loop_hook(data.mlx, &render, &data);
-	mlx_key_hook(data.mlx_win, &handle_keypress, &data);
+	if (ac > 1)
+	{
+		data.map.map = av[1];
+		data.map.z = split_data(&data.map);
+		data.mlx = mlx_init();
+		data.mlx_win = mlx_new_window(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "Hello world!");
+		data.mlx_img.img = mlx_new_image(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
+		data.mlx_img.addr = mlx_get_data_addr(data.mlx_img.img, &data.mlx_img.bpp, 
+		&data.mlx_img.line_len, &data.mlx_img.endian);
+		mlx_loop_hook(data.mlx, &render, &data);
+		mlx_key_hook(data.mlx_win, &handle_keypress, &data);
 	
-	mlx_loop(data.mlx);
-	free(data.mlx);
+		mlx_loop(data.mlx);
+		free(data.mlx);
+	}
 }

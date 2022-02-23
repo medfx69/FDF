@@ -6,7 +6,7 @@
 /*   By: mait-aad <mait-aad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 16:15:16 by mait-aad          #+#    #+#             */
-/*   Updated: 2022/02/21 21:52:44 by mait-aad         ###   ########.fr       */
+/*   Updated: 2022/02/23 20:19:25 by mait-aad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,9 @@
 # include <string.h>
 # include <stdio.h>
 # include <mlx.h>
-# define WINDOW_WIDTH 600
-# define WINDOW_HEIGHT 600
+# include <math.h>
+# define WINDOW_WIDTH 1000
+# define WINDOW_HEIGHT 1000
 # define BUFFER_SIZE 100
 # define RED_PIXEL 0xFF0000
 # define GREEN_PIXEL 0xFF00
