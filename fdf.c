@@ -6,7 +6,7 @@
 /*   By: mait-aad <mait-aad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 14:40:35 by mait-aad          #+#    #+#             */
-/*   Updated: 2022/02/24 20:14:35 by mait-aad         ###   ########.fr       */
+/*   Updated: 2022/03/02 21:58:11 by mait-aad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,6 @@ void	img_pix_put(t_img *img, int x, int y, int color)
 	}
 }
 
-// static void iso(int *x, int *y, int z)
-// {
-//     int previous_x;
-//     int previous_y;
-
-//     previous_x = *x;
-//     previous_y = *y;
-//     *x = (previous_x - previous_y) * cos(0.523599);
-//     *y = -z + (previous_x + previous_y) * sin(0.523599);
-// }
 static void iso(int *x, int *y, int z)
 {
     int previous_x;
@@ -50,91 +40,71 @@ static void iso(int *x, int *y, int z)
 	*y = -z + (previous_x + previous_y) * sin(0.523599);
 }
 
-void plot_line(int	x0,int	x1, int	y0, int	y1, t_data *data)
+void plot_line(x0, x1, y0, y1, t_data *data)
 {
-	int	dx;
-	int	s[2];
-	int	dy;
-	int	err[2];
-
-	dx = abs(x1 - x0);
-	s[0] = -1;
-	if (x0 < x1)
-		s[0] = 1;
-	dy = -abs(y1 - y0);
-	err[0] = dx + dy; 
-	s[1] = -1;
-	if (y0 < y1)
-		s[1] = 1;
-	//render_background(&data->mlx_img, WHITE_PIXEL);
-	while (x0)
+	    int dx, dy, dz,p, x, y,tmp1,tmp2,sing;
+ 
+	dx=x1-x0;
+	dy=y1-y0;
+	dz = data->map.z[x1][y1] - data->map.z[x0][y0];
+	sing = 1;
+	if (dz < 0)
+		sing = -1;
+	x=x0;
+	y=y0;
+ 
+	p=2*dy-dx;
+ 
+	while(x<x1)
 	{
-		printf("<%d><%d>\n", x0, y0);
-		mlx_pixel_put(data->mlx, data->mlx_img.img, x0, y0, RED_PIXEL);
-		if (x0 == x1 && y0 == y1)
-			break ;
-		err[1] = 2 * err[0];
-		if (err[1] >= dy)
+		if(p>=0)
 		{
-			err[0] += dy;
-			x0 += s[0];
+			tmp1 = x;
+			tmp2 = y;
+			iso(tmp1,tmp2,data->map.z[x0][y0]);
+			if (dz != 0)
+				data->map.z += sing;
+			img_pix_put(data->mlx_img.img, tmp1, tmp2, 0xFFFFFF);
+			y=y+1;
+			p=p+2*dy-2*dx;
 		}
-		if (err[1] <= dx)
+		else
 		{
-			err[0] += dx;
-			y0 += s[1];
+			tmp1 = x;
+			tmp2 = y;
+			iso(tmp1,tmp2,data->map.z[x0][y0]);
+			if (dz != 0)
+				data->map.z += sing;
+			img_pix_put(data->mlx_img.img, tmp1, tmp2, 0xFFFFFF);
+			p=p+2*dy;
 		}
+		x=x+1;
 	}
 }
 
 int	render_rect(t_img	*img, t_rect rect ,t_data	*data)
 {
-	int	x[2];
-	int	y[2];
-	int **cords;
+	t_pixel	cox;
+	t_pixel	coy;
+	int		x;
+	int		y;
+	// img_pix_put(img, j++, i, 0xFFFFFF);
+	x = 0;
+	y = 0;
 
-	x[0] = 0;
-	y[0] = 0;
-	cords = malloc(sizeof(int) * 2);
-	cords[0] = malloc(sizeof(int) * data->map.x);
-	cords[1] = malloc(sizeof(int) * data->map.y);
-	while (x[0] < data->map.x - 1 && y[0] < data->map.y - 1)
-	{	
-		x[1] = x[0];
-		y[1] = y[0];
-		x[1] = ((WINDOW_WIDTH - 60) * x[1])/ (data->map.x);
-		y[1] = ((WINDOW_HEIGHT - 60) * y[1])/ (data->map.y);
-		iso(&x[1], &y[1], data->map.z[y[0]][x[0]]);
-		cords[0][y[0]] = x[1];
-		cords[1][y[0]] = y[1];
-		//img_pix_put(img, x[1], -y[1], rect.color);
-		if (y[0] > 0 && x[0] > 0)
-			plot_line(cords[0][y[0]-1], cords[0][y[0]], cords[1][y[0]-1], cords[0][y[0]] , data);
-		y[0]++;
-		x[0]++;
-	}
-	return (0);
-}
-
-void render_background(t_img *img, int	color)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < WINDOW_HEIGHT)
+	while(x < data->map.x && y < data->map.y)
 	{
-		j = 0;
-		while(j < WINDOW_WIDTH)
-			img_pix_put(img, j++, i, color);
-		++i;
+		cox.from = x;
+		cox.to = x + 1;
+		coy.from = y;
+		coy.to = y + 1;
+		plot_line(cox.from,cox.to,coy.from,coy.from,data);
+		plot_line(cox.from,cox.from,coy.from,coy.to,data);
 	}
 }
 
 int	render(t_data *data)
 {
-	//render_background(&data->mlx_img, WHITE_PIXEL);
-	// render_rect(&data->mlx_img, (t_rect){WINDOW_WIDTH, WINDOW_HEIGHT, 100, 100, GREEN_PIXEL});
 	render_rect(&data->mlx_img, (t_rect){0, 0, 100, 100, RED_PIXEL}, data);
 	mlx_put_image_to_window(data->mlx, data->mlx_win, data->mlx_img.img, 0, 0);
 	return (0);
@@ -160,7 +130,7 @@ int	main(int	ac, char	**av)
 		data.map.map = av[1];
 		data.map.z = split_data(&data.map);
 		data.mlx = mlx_init();
-		data.mlx_win = mlx_new_window(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "Hello world!");
+		data.mlx_win = mlx_new_window(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "fdf");
 		data.mlx_img.img = mlx_new_image(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
 		data.mlx_img.addr = mlx_get_data_addr(data.mlx_img.img, &data.mlx_img.bpp, 
 		&data.mlx_img.line_len, &data.mlx_img.endian);
