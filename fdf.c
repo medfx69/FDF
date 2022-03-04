@@ -6,7 +6,7 @@
 /*   By: mait-aad <mait-aad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 14:40:35 by mait-aad          #+#    #+#             */
-/*   Updated: 2022/03/02 21:58:11 by mait-aad         ###   ########.fr       */
+/*   Updated: 2022/03/04 18:55:24 by mait-aad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,76 +36,105 @@ static void iso(int *x, int *y, int z)
 
     previous_x = *x;
     previous_y = *y;
-    *x = (previous_x - previous_y) * cos(0.523599);
-	*y = -z + (previous_x + previous_y) * sin(0.523599);
+    *x = (previous_x - previous_y) * cos(0.423599);
+	*y = -z + (previous_x + previous_y) * sin(0.423599);
 }
 
-void plot_line(x0, x1, y0, y1, t_data *data)
+void	ft_bresenham(t_data *fdf, t_pixel *pixelx, t_pixel	*pixely, t_pixel	*pixelz)
 {
-	    int dx, dy, dz,p, x, y,tmp1,tmp2,sing;
- 
-	dx=x1-x0;
-	dy=y1-y0;
-	dz = data->map.z[x1][y1] - data->map.z[x0][y0];
-	sing = 1;
-	if (dz < 0)
-		sing = -1;
-	x=x0;
-	y=y0;
- 
-	p=2*dy-dx;
- 
-	while(x<x1)
+	fdf->dx = (abs(pixelx->to - pixelx->from));
+	fdf->sx = (pixelx->from < pixelx->to ? 1 : -1);
+	fdf->dy = (abs(pixely->to - pixely->from));
+	fdf->sy = (pixely->from < pixely->to ? 1 : -1);
+	fdf->err = (fdf->dx > fdf->dy ? fdf->dx : -fdf->dy) / 2;
+	while (1)
 	{
-		if(p>=0)
+		img_pix_put(&fdf->mlx_img, pixelx->from + 400, pixely->from + 300, RED_PIXEL);
+		if (pixelx->from == pixelx->to && pixely->from == pixely->to)
+			break ;
+		fdf->e2 = fdf->err;
+		if (fdf->e2 > -fdf->dx)
 		{
-			tmp1 = x;
-			tmp2 = y;
-			iso(tmp1,tmp2,data->map.z[x0][y0]);
-			if (dz != 0)
-				data->map.z += sing;
-			img_pix_put(data->mlx_img.img, tmp1, tmp2, 0xFFFFFF);
-			y=y+1;
-			p=p+2*dy-2*dx;
+			fdf->err -= fdf->dy;
+			pixelx->from += fdf->sx;
 		}
-		else
+		if (fdf->e2 < fdf->dy)
 		{
-			tmp1 = x;
-			tmp2 = y;
-			iso(tmp1,tmp2,data->map.z[x0][y0]);
-			if (dz != 0)
-				data->map.z += sing;
-			img_pix_put(data->mlx_img.img, tmp1, tmp2, 0xFFFFFF);
-			p=p+2*dy;
+			fdf->err += fdf->dx;
+			pixely->from += fdf->sy;
 		}
-		x=x+1;
 	}
 }
 
-int	render_rect(t_img	*img, t_rect rect ,t_data	*data)
+void	render_rect(t_img	*img,t_data	*data)
 {
 	t_pixel	cox;
 	t_pixel	coy;
+	t_pixel coz;
 	int		x;
 	int		y;
-	// img_pix_put(img, j++, i, 0xFFFFFF);
-	x = 0;
-	y = 0;
 
-	while(x < data->map.x && y < data->map.y)
+	y = 0;
+	while(y < data->map.y - 1)
 	{
-		cox.from = x;
-		cox.to = x + 1;
-		coy.from = y;
-		coy.to = y + 1;
-		plot_line(cox.from,cox.to,coy.from,coy.from,data);
-		plot_line(cox.from,cox.from,coy.from,coy.to,data);
+		x = 0;
+		while (x < data->map.x - 1)
+		{
+			cox.to = (x + 1) * (WINDOW_WIDTH / (data->map.x * 2));
+			cox.from = x * (WINDOW_WIDTH / (data->map.x * 2));
+			coy.from = y *  (WINDOW_WIDTH / (data->map.y * 2));
+			coy.to = y * (WINDOW_WIDTH / (data->map.y * 2));
+			coz.from = data->map.z[y][x];
+			coz.to = data->map.z[y][x + 1];
+			iso(&cox.to, &coy.to, coz.to * 20);
+			iso(&cox.from, &coy.from, coz.from * 20);
+			ft_bresenham(data, &cox, &coy, &coz);
+			x++;	
+		}
+		y++;
+	}
+	x = 0;
+	while(x < data->map.x - 1)
+	{
+		y = 0;
+		while (y < data->map.y - 2)
+		{
+			coy.to = (y + 1) * (WINDOW_WIDTH / (data->map.y * 2));
+			coy.from = y * (WINDOW_WIDTH / (data->map.y * 2));
+			cox.from = x *  (WINDOW_WIDTH / (data->map.x * 2));
+			cox.to = x * (WINDOW_WIDTH / (data->map.x * 2));
+			coz.from = data->map.z[y][x];
+			coz.to = data->map.z[y + 1][x];
+			iso(&cox.to, &coy.to, coz.to * 20);
+			iso(&cox.from, &coy.from, coz.from * 20);
+			ft_bresenham(data, &cox, &coy, &coz);
+			y++;	
+		}
+		x++;
+	}
+}
+
+void	render_background(t_img *img, int color)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < WINDOW_HEIGHT)
+	{
+		j = 0;
+		while (j < WINDOW_WIDTH)
+		{
+			img_pix_put(img, j++, i, color);
+		}
+		++i;
 	}
 }
 
 int	render(t_data *data)
 {
-	render_rect(&data->mlx_img, (t_rect){0, 0, 100, 100, RED_PIXEL}, data);
+	render_background(&data->mlx_img, WHITE_PIXEL);
+	render_rect(&data->mlx_img, data);
 	mlx_put_image_to_window(data->mlx, data->mlx_win, data->mlx_img.img, 0, 0);
 	return (0);
 }
