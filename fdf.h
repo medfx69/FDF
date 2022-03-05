@@ -6,7 +6,7 @@
 /*   By: mait-aad <mait-aad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 16:15:16 by mait-aad          #+#    #+#             */
-/*   Updated: 2022/02/23 20:19:25 by mait-aad         ###   ########.fr       */
+/*   Updated: 2022/03/05 18:09:01 by mait-aad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,12 @@ typedef struct s_img
 	int		endian;
 }	t_img;
 
+typedef struct s_pixel
+{
+	int	from;
+	int to;
+}t_pixel;
+
 typedef struct	s_coordinates
 {
 	char	*map;
@@ -47,6 +53,12 @@ typedef struct	s_coordinates
 typedef struct	s_data
 {
 	void	*mlx;
+	int		dx;
+	int		sx;
+	int		dy;
+	int		sy;
+	int		err;
+	int		e2;
 	void	*mlx_win;
 	t_img	mlx_img;
 	t_cdts	map;
@@ -71,5 +83,9 @@ int		ft_atoi(const char	*str);
 char	*ft_substr(char *s, unsigned int start, size_t len);
 char	*get_data(char	*map);
 int		**split_data(t_cdts *data);
+void	ft_bresenham(t_data *fdf, t_pixel *pixelx, t_pixel	*pixely);
+ void	ft_draw_cloms(t_data	*data, t_pixel	coz);
+ void	ft_draw_lines(t_data	*data, t_pixel	coz);
+ void	img_pix_put(t_img *img, int x, int y, int color);
 
 #endif

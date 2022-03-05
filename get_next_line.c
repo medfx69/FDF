@@ -6,7 +6,7 @@
 /*   By: mait-aad <mait-aad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 14:40:22 by mait-aad          #+#    #+#             */
-/*   Updated: 2022/02/19 17:42:50 by mait-aad         ###   ########.fr       */
+/*   Updated: 2022/03/05 18:08:33 by mait-aad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,7 @@ char	*read_and_save(int fd, char *save)
 }
 char	*get_next_line(int fd)
 {
-	char	*line;
-	char	*save;
+	static char	*save;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
