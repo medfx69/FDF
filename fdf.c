@@ -6,7 +6,7 @@
 /*   By: mait-aad <mait-aad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 14:40:35 by mait-aad          #+#    #+#             */
-/*   Updated: 2022/03/05 18:17:41 by mait-aad         ###   ########.fr       */
+/*   Updated: 2022/03/09 17:51:20 by mait-aad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,39 +32,53 @@ int	handle_keypress(int key, t_data	*data)
 {
 	if (key == 53)
 	{
-		free(data->mlx_win);
-		free(data->mlx_img.img);
 		mlx_destroy_image(data->mlx, data->mlx_img.img);
-		mlx_clear_window(data->mlx, data->mlx_win);
 		mlx_destroy_window(data->mlx, data->mlx_win);
+		exit(1);
 	}
+	if (key == 126)
+		data->dm.a_z++;
+	if (key == 125)
+		data->dm.a_z--;
+	if (key == 123)
+		data->dm.a_w -= 90;
+	if (key == 124)
+		data->dm.a_w += 90;
+	if (key == 12)
+		data->dm.a_h -= 20;
+	if (key == 0)
+		data->dm.a_h += 20;
+	mlx_destroy_image(data->mlx, data->mlx_img.img);
+	data->mlx_img.img = mlx_new_image(data->mlx,
+			data->dm.w, data->dm.h);
 	return (0);
 }
 
 int	main(int ac, char	**av)
 {
 	t_data	data;
-	int		i;
 
 	if (ac != 2)
 	{
+		write (1, "pleas enter a map\n", 18);
 		return (0);
 	}
 	data.map.map = av[1];
 	data.map.z = split_data(&data.map);
+	if (!data.map.z || data.map.x == 0 || data.map.y == 0)
+	{
+		write(1, "pleas check to enter a valid map\n", 34);
+		return (0);
+	}
 	data.mlx = mlx_init();
-	data.mlx_win = mlx_new_window(data.mlx, WINDOW_WIDTH,
-			WINDOW_HEIGHT, "fdf");
-	data.mlx_img.img = mlx_new_image(data.mlx,
-			WINDOW_WIDTH, WINDOW_HEIGHT);
+	data.dm.w = get_win_w(&data);
+	data.dm.h = get_win_h(&data);
+	data.dm.a_z = 1;
+	data.mlx_win = mlx_new_window(data.mlx, data.dm.w, data.dm.h, "fdf");
+	data.mlx_img.img = mlx_new_image(data.mlx, data.dm.w, data.dm.h);
 	data.mlx_img.addr = mlx_get_data_addr(data.mlx_img.img,
 			&data.mlx_img.bpp, &data.mlx_img.line_len, &data.mlx_img.endian);
 	mlx_loop_hook(data.mlx, &render, &data);
 	mlx_key_hook(data.mlx_win, &handle_keypress, &data);
 	mlx_loop(data.mlx);
-	i = 0;
-	while (i < data.map.y - 1)
-		free(data.map.z[i++]);
-	free(data.map.z);
-	free(data.mlx);
 }

@@ -6,10 +6,9 @@
 /*   By: mait-aad <mait-aad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 14:40:22 by mait-aad          #+#    #+#             */
-/*   Updated: 2022/03/05 18:08:33 by mait-aad         ###   ########.fr       */
+/*   Updated: 2022/03/09 17:45:22 by mait-aad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "fdf.h"
 
@@ -18,13 +17,13 @@ char	*read_and_save(int fd, char *save)
 	char	*buff;
 	int		bytes;
 
-	buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	buff = malloc(1000000 + 1 * sizeof(char));
 	if (!buff)
 		return (NULL);
 	bytes = 1;
 	while (bytes != 0)
 	{
-		bytes = read(fd, buff, BUFFER_SIZE);
+		bytes = read(fd, buff, 1000000);
 		if (bytes <= -1)
 		{
 			free(buff);
@@ -36,6 +35,7 @@ char	*read_and_save(int fd, char *save)
 	free(buff);
 	return (save);
 }
+
 char	*get_next_line(int fd)
 {
 	static char	*save;
@@ -55,5 +55,6 @@ char	*get_data(char	*map)
 
 	i = open(map, O_RDONLY);
 	tmp = get_next_line(i);
+	close(i);
 	return (tmp);
 }

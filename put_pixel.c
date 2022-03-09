@@ -6,11 +6,12 @@
 /*   By: mait-aad <mait-aad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/05 17:51:50 by mait-aad          #+#    #+#             */
-/*   Updated: 2022/03/05 17:52:05 by mait-aad         ###   ########.fr       */
+/*   Updated: 2022/03/09 17:46:30 by mait-aad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
 void	img_pix_put(t_img *img, int x, int y, int color)
 {
 	char	*pixel;

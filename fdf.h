@@ -6,12 +6,12 @@
 /*   By: mait-aad <mait-aad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 16:15:16 by mait-aad          #+#    #+#             */
-/*   Updated: 2022/03/05 18:09:01 by mait-aad         ###   ########.fr       */
+/*   Updated: 2022/03/09 17:43:06 by mait-aad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#ifndef FDF_H
+# define FDF_H
 
 # include <fcntl.h>
 # include <unistd.h>
@@ -39,18 +39,27 @@ typedef struct s_img
 typedef struct s_pixel
 {
 	int	from;
-	int to;
+	int	to;
 }t_pixel;
 
-typedef struct	s_coordinates
+typedef struct s_coordinates
 {
 	char	*map;
 	int		x;
 	int		y;
 	int		**z;
-} t_cdts;
+}	t_cdts;
 
-typedef struct	s_data
+typedef struct s_demo
+{
+	int	w;
+	int	h;
+	int	a_w;
+	int	a_h;
+	int	a_z;
+}	t_demo;
+
+typedef struct s_data
 {
 	void	*mlx;
 	int		dx;
@@ -62,15 +71,16 @@ typedef struct	s_data
 	void	*mlx_win;
 	t_img	mlx_img;
 	t_cdts	map;
+	t_demo	dm;
 }	t_data;
 
-typedef struct	s_rect
+typedef struct s_rect
 {
 	int	x;
 	int	y;
 	int	width;
-	int height;
-	int color;
+	int	height;
+	int	color;
 }	t_rect;
 
 char	*ft_strjoin(char	*s1, char	*s2);
@@ -84,8 +94,11 @@ char	*ft_substr(char *s, unsigned int start, size_t len);
 char	*get_data(char	*map);
 int		**split_data(t_cdts *data);
 void	ft_bresenham(t_data *fdf, t_pixel *pixelx, t_pixel	*pixely);
- void	ft_draw_cloms(t_data	*data, t_pixel	coz);
- void	ft_draw_lines(t_data	*data, t_pixel	coz);
- void	img_pix_put(t_img *img, int x, int y, int color);
+void	ft_draw_cloms(t_data	*data, t_pixel	coz);
+void	ft_draw_lines(t_data	*data, t_pixel	coz);
+void	img_pix_put(t_img *img, int x, int y, int color);
+int		get_win_w(t_data	*data);
+int		get_win_h(t_data	*data);
+int		check2(char	*s, char c);
 
 #endif

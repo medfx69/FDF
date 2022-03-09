@@ -6,7 +6,7 @@
 /*   By: mait-aad <mait-aad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/09 17:31:25 by mait-aad          #+#    #+#             */
-/*   Updated: 2022/02/19 16:14:42 by mait-aad         ###   ########.fr       */
+/*   Updated: 2022/03/09 17:45:09 by mait-aad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static char	**ft_that_do_the_job(char	*s,	char c, int counter, char **ptr)
 		stop = start;
 		while (s[stop] != c && s[stop])
 			stop++;
-		ptr[i] = ft_substr(s, start, stop - start); //leaks
+		ptr[i] = ft_substr(s, start, stop - start);
 		if (!ptr[i])
 			return (make_ptr_free(ptr));
 		i++;
