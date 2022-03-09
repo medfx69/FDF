@@ -6,7 +6,7 @@
 /*   By: mait-aad <mait-aad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 18:45:36 by mait-aad          #+#    #+#             */
-/*   Updated: 2022/03/09 18:46:12 by mait-aad         ###   ########.fr       */
+/*   Updated: 2022/03/09 19:13:15 by mait-aad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ int	handle_keypress(int key, t_data	*data)
 		exit(1);
 	}
 	if (key == 126)
-		data->dm.a_z += 5;
+		data->dm.a_z += 1;
 	if (key == 125)
-		data->dm.a_z -= 5;
+		data->dm.a_z -= 1;
 	if (key == 123)
 		data->dm.a_w -= 90;
 	if (key == 124)
