@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf.c                                              :+:      :+:    :+:   */
+/*   fdf_bonus.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mait-aad <mait-aad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/17 14:40:35 by mait-aad          #+#    #+#             */
-/*   Updated: 2022/03/09 18:46:03 by mait-aad         ###   ########.fr       */
+/*   Created: 2022/03/09 18:45:36 by mait-aad          #+#    #+#             */
+/*   Updated: 2022/03/09 18:46:12 by mait-aad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,21 @@ int	handle_keypress(int key, t_data	*data)
 		mlx_destroy_window(data->mlx, data->mlx_win);
 		exit(1);
 	}
+	if (key == 126)
+		data->dm.a_z += 5;
+	if (key == 125)
+		data->dm.a_z -= 5;
+	if (key == 123)
+		data->dm.a_w -= 90;
+	if (key == 124)
+		data->dm.a_w += 90;
+	if (key == 12)
+		data->dm.a_h -= 20;
+	if (key == 0)
+		data->dm.a_h += 20;
+	mlx_destroy_image(data->mlx, data->mlx_img.img);
+	data->mlx_img.img = mlx_new_image(data->mlx,
+			data->dm.w, data->dm.h);
 	return (0);
 }
 

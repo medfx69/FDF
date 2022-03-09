@@ -6,7 +6,7 @@
 /*   By: mait-aad <mait-aad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:42:33 by mait-aad          #+#    #+#             */
-/*   Updated: 2022/03/09 17:44:58 by mait-aad         ###   ########.fr       */
+/*   Updated: 2022/03/09 18:39:49 by mait-aad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,10 @@ int	get_win_h(t_data *data)
 	int	i;
 
 	i = data->map.y / 3;
+	data->dm.a_z = 20;
 	if (data->map.y > 100)
 	{
+		data->dm.a_z = 1;
 		data->dm.a_h = 250;
 		return (2000);
 	}	
