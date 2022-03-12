@@ -6,7 +6,7 @@
 /*   By: mait-aad <mait-aad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 18:45:36 by mait-aad          #+#    #+#             */
-/*   Updated: 2022/03/09 19:13:15 by mait-aad         ###   ########.fr       */
+/*   Updated: 2022/03/12 15:15:30 by mait-aad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,14 @@ int	handle_keypress(int key, t_data	*data)
 	return (0);
 }
 
+int	ft_exit(t_data	*data)
+{
+	mlx_destroy_image(data->mlx, data->mlx_img.img);
+	mlx_destroy_window(data->mlx, data->mlx_win);
+	exit(1);
+	return (0);
+}
+
 int	main(int ac, char	**av)
 {
 	t_data	data;
@@ -79,5 +87,6 @@ int	main(int ac, char	**av)
 			&data.mlx_img.bpp, &data.mlx_img.line_len, &data.mlx_img.endian);
 	mlx_loop_hook(data.mlx, &render, &data);
 	mlx_key_hook(data.mlx_win, &handle_keypress, &data);
+	mlx_hook(data.mlx_win, 17, 0, &ft_exit, &data);
 	mlx_loop(data.mlx);
 }
