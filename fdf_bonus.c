@@ -83,8 +83,6 @@ int	main(int ac, char	**av)
 	data.dm.h = get_win_h(&data);
 	data.mlx_win = mlx_new_window(data.mlx, data.dm.w, data.dm.h, "fdf");
 	data.mlx_img.img = mlx_new_image(data.mlx, data.dm.w, data.dm.h);
-	data.mlx_img.addr = mlx_get_data_addr(data.mlx_img.img,
-			&data.mlx_img.bpp, &data.mlx_img.line_len, &data.mlx_img.endian);
 	mlx_loop_hook(data.mlx, &render, &data);
 	mlx_key_hook(data.mlx_win, &handle_keypress, &data);
 	mlx_hook(data.mlx_win, 17, 0, &ft_exit, &data);

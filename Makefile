@@ -68,12 +68,12 @@ $(NAMEB):
 	$(CC) $(FLAGS) -c $(SRCB)
 	ar -rc $(NAMEB) $(OBJB)
 	$(CC) $(FLAGS2)	$(OBJB)
-	rm -f $(OBJB) $(NAMEB)
+	rm -f $(OBJB)
 $(NAME):
 	$(CC) $(FLAGS) -c $(SRC)
 	ar -rc $(NAME) $(OBJ)
 	$(CC) $(FLAGS2)	$(NAME)
-	rm -f $(OBJ) $(NAME)
+	rm -f $(OBJ)
 
 fclean: clean
 	rm -f $(NAME) $(NAMEB) a.out

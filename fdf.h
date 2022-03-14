@@ -6,7 +6,7 @@
 /*   By: mait-aad <mait-aad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 16:15:16 by mait-aad          #+#    #+#             */
-/*   Updated: 2022/03/09 17:43:06 by mait-aad         ###   ########.fr       */
+/*   Updated: 2022/03/12 19:46:54 by mait-aad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,12 @@
 typedef struct s_img
 {
 	void	*img;
-	void	*addr;
+	int	*addr;
 	int		bpp;
 	int		line_len;
 	int		endian;
+	int		w;
+	int		h;
 }	t_img;
 
 typedef struct s_pixel
@@ -96,7 +98,7 @@ int		**split_data(t_cdts *data);
 void	ft_bresenham(t_data *fdf, t_pixel *pixelx, t_pixel	*pixely);
 void	ft_draw_cloms(t_data	*data, t_pixel	coz);
 void	ft_draw_lines(t_data	*data, t_pixel	coz);
-void	img_pix_put(t_img *img, int x, int y, int color);
+void	img_pix_put(t_img img, int x, int y, int color);
 int		get_win_w(t_data	*data);
 int		get_win_h(t_data	*data);
 int		check2(char	*s, char c);

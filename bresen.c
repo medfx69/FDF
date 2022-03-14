@@ -35,7 +35,7 @@ void	ft_bresenham(t_data *data, t_pixel *pixelx, t_pixel	*pixely)
 	data->err = bool(data->dx, data->dy) / 2;
 	while (1)
 	{
-		img_pix_put(&data->mlx_img, pixelx->from + data->dm.a_w,
+		img_pix_put(data->mlx_img, pixelx->from + data->dm.a_w,
 			pixely->from + data->dm.a_h, WHITE_PIXEL);
 		if (pixelx->from == pixelx->to && pixely->from == pixely->to)
 			break ;
