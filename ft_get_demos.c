@@ -54,7 +54,7 @@ int	get_win_h(t_data *data)
 	if (2 * i > data->map.x)
 	{
 		data->dm.a_h = 750;
-		data->mlx_img.h =1400;
+		data->mlx_img.h = 1400;
 		return (1400);
 	}
 	else
