@@ -59,7 +59,7 @@ void	ft_draw_lines(t_data	*data, t_pixel	coz)
 	int		y;
 
 	x = 0;
-	while (x < data->map.x - 1)
+	while (x < data->map.x)
 	{
 		y = 0;
 		while (y < data->map.y - 2)

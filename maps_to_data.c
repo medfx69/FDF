@@ -86,7 +86,7 @@ int	**split_data(t_cdts	*data)
 	int		i;
 
 	splted_data = ft_split(get_data(data->map), '\n');
-	data->y = get_y(splted_data);
+	data->y = get_y(splted_data) + 1;
 	data->z = malloc(sizeof(int *) * data->y);
 	if (!data->z)
 		return (0);

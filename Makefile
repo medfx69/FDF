@@ -6,12 +6,12 @@
 #    By: mait-aad <mait-aad@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/09 17:45:35 by mait-aad          #+#    #+#              #
-#    Updated: 2022/03/09 19:05:56 by mait-aad         ###   ########.fr        #
+#    Updated: 2022/03/18 13:00:22 by mait-aad         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME=fdf.a
-NAMEB=fdf_bonus.a
+NAME=fdf
+NAMEB=fdf_bonus
 CC=gcc
 FLAGS=-Wall -Wextra -Werror
 FLAGS2=-Wall -Wextra -Werror -lmlx -framework OpenGL -framework AppKit
@@ -27,17 +27,6 @@ SRC = fdf.c\
 	draw.c\
 	bresen.c\
 	ft_get_demos.c
-OBJ = fdf.o\
-	get_next_line.o\
-	utils.o\
-	ft_split.o\
-	ft_substr.o\
-	ft_atoi.o\
-	maps_to_data.o\
-	put_pixel.o\
-	draw.o\
-	bresen.o\
-	ft_get_demos.o
 SRCB =  fdf_bonus.c\
 	get_next_line.c\
 	utils.c\
@@ -49,34 +38,17 @@ SRCB =  fdf_bonus.c\
 	draw.c\
 	bresen.c\
 	ft_get_demos.c
-OBJB =fdf_bonus.o\
-	get_next_line.o\
-	utils.o\
-	ft_split.o\
-	ft_substr.o\
-	ft_atoi.o\
-	maps_to_data.o\
-	put_pixel.o\
-	draw.o\
-	bresen.o\
-	ft_get_demos.o
 all : $(NAME)
+$(NAME):
+	$(CC) $(FLAGS2) $(SRC) -o $(NAME)
 
 bonus : $(NAMEB) 
-
 $(NAMEB):
-	$(CC) $(FLAGS) -c $(SRCB)
-	ar -rc $(NAMEB) $(OBJB)
-	$(CC) $(FLAGS2)	$(OBJB)
-	rm -f $(OBJB)
-$(NAME):
-	$(CC) $(FLAGS) -c $(SRC)
-	ar -rc $(NAME) $(OBJ)
-	$(CC) $(FLAGS2)	$(NAME)
-	rm -f $(OBJ)
+	$(CC) $(FLAGS2) $(SRCB) -o $(NAMEB)
+
 
 fclean: clean
-	rm -f $(NAME) $(NAMEB) a.out
+	rm -f $(NAME) $(NAMEB)
 
 clean:
 	rm -f *.o
