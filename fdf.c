@@ -30,7 +30,7 @@ int	render(t_data *data)
 
 int	handle_keypress(int key, t_data	*data)
 {
-	if (key == 53 || key == 17)
+	if (key == 53)
 	{
 		mlx_destroy_image(data->mlx, data->mlx_img.img);
 		mlx_destroy_window(data->mlx, data->mlx_win);
